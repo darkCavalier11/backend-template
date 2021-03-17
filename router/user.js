@@ -40,7 +40,7 @@ router.get("/user/:userId/advisor", async (req, res) => {
     const user = await UserModel.findById(userId);
     res.send(user.Advisors);
   } catch (err) {
-    res.send("Error: Invalid UserID").status(404);
+    res.status(404).send("Error: Invalid UserID");
   }
 });
 
@@ -50,7 +50,7 @@ router.post("/user/:userId/advisor/:advisorId", async (req, res) => {
     const advisorId = req.params.advisorId;
     const user = await UserModel.findById(userId);
     const advisor = await AdvisorModel.findById(advisorId);
-    const bookingTime = req.body.bookingTime;
+    const bookingTime = req.body.BookingTime;
     user.Advisors.push(advisor);
     user.Bookings.push({
       advisorName: advisor.name,
@@ -60,9 +60,9 @@ router.post("/user/:userId/advisor/:advisorId", async (req, res) => {
       BookingId: mongoose.Types.ObjectId().toHexString(),
     });
     await user.save();
-    res.status(200).send(user);
+    res.status(200).send();
   } catch (err) {
-    res.send(err).status(400);
+    res.status(400).send("Invalid Credentials");
   }
 });
 
